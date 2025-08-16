@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  This script provisions s3 bucket
+
+Parameters:
+  BucketName:
+    Type: String
+    Description: Name of the s3 bucket
+    AllowedPattern: "^[a-z0-9,-]{3,63}$"
+    ConstraintDescription: Bucket name must be lowercase, between 3 and 63 characters, and can contain numbers, commas, and hyphens}"
+    Default: "my-bucket"
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketName
+      AccessControl: Private
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      VersioningConfiguration:
+        Status: Enabled
+
+Outputs:
+  Bucket:
+    Description: S3 Bucket Name
+    Value: !Ref S3Bucket
+    Export:
+      Name: !Sub "${AWS::StackName}-bucket"
+
+  MyStackName:
+    Description: Stack Name
+    Value: !Sub "${AWS::StackName}"
+
+
+
+
